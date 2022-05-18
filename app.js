@@ -6,6 +6,11 @@ canvas.height = 576
 
 c.fillRect(0, 0, canvas.width, canvas.height)
 
+/**
+ * something like gravity
+ * @type {number}
+ */
+const gravity = 0.2;
 
 class Sprite {
     constructor({position, velocity}) {
@@ -27,11 +32,11 @@ class Sprite {
 
         if(this.position.y + this.height + this.velocity.y >= canvas.height || this.position.y === 0){
             this.velocity.y = -this.velocity.y
-        }
+        }else this.velocity.y += gravity
 
         if(this.position.x + this.width + this.velocity.x >= canvas.width || this.position.x === 0){
             this.velocity.x = -this.velocity.x
-        }
+        }else this.velocity.x += gravity
     }
 }
 
