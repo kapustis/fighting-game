@@ -17,11 +17,12 @@ class Sprite {
         this.position = position
         this.velocity = velocity
         this.height = 150
-        this.width= 50
+        this.width = 50
     }
 
     draw() {
         c.fillStyle = 'red'
+
         c.fillRect(this.position.x, this.position.y, this.width, this.height)
     }
 
@@ -30,13 +31,20 @@ class Sprite {
         this.position.y += this.velocity.y
         this.position.x += this.velocity.x
 
-        if(this.position.y + this.height + this.velocity.y >= canvas.height || this.position.y === 0){
+        if (this.position.y + this.height + this.velocity.y >= canvas.height || this.position.y <= 0) {
             this.velocity.y = -this.velocity.y
-        }else this.velocity.y += gravity
+            // this.velocity.y = 0
+        } else {
+            // this.velocity.y += gravity
+        }
 
-        if(this.position.x + this.width + this.velocity.x >= canvas.width || this.position.x === 0){
+        if (this.position.x + this.width + this.velocity.x >= canvas.width || this.position.x === 0) {
             this.velocity.x = -this.velocity.x
-        }else this.velocity.x += gravity
+            // this.velocity.x = 0
+        } else {
+            // this.velocity.x += gravity
+
+        }
     }
 }
 
@@ -46,11 +54,10 @@ const player = new Sprite({
         y: 0
     },
     velocity: {
-        x: 1,
-        y: 1
+        x: 0,
+        y: 0
     }
 })
-
 
 
 const enemy = new Sprite({
@@ -59,19 +66,62 @@ const enemy = new Sprite({
         y: 100
     },
     velocity: {
-        x: 2,
-        y: 10
+        x: 0,
+        y: 0
     }
 })
 
-
+const keys = {
+    a:{
+        pressed:false
+    },
+    d:{
+        pressed:false
+    },
+}
 
 function animate() {
     window.requestAnimationFrame(animate);
     c.fillStyle = 'black'
-    c.fillRect(0,0,canvas.width,canvas.height)
+    c.fillRect(0, 0, canvas.width, canvas.height)
     player.update()
     enemy.update()
+
+    player.velocity.x = 0
+
+    if(keys.a.pressed){
+        player.velocity.x = -1
+    }else  if (keys.d.pressed){
+        player.velocity.x = 1
+    }
 }
 
 animate()
+
+window.addEventListener('keydown', (event) => {
+    console.log(event)
+    // if (event.code === 'KeyR'){
+    //     animate()
+    // }
+    switch (event.code) {
+
+        case 'KeyD':
+            keys.d.pressed = true
+            break
+        case  'KeyA':
+            keys.a.pressed = true
+            break
+    }
+})
+
+window.addEventListener('keyup', (event) => {
+    switch (event.code) {
+
+        case 'KeyD':
+            keys.d.pressed = false
+            break
+        case  'KeyA':
+            keys.a.pressed = false
+            break
+    }
+})
