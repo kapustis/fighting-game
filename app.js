@@ -14,12 +14,12 @@ const gravity = 0.7;
 
 class Sprite {
     constructor({position, velocity, bgrColor, offset}) {
-        this.position = position
-        this.velocity = velocity
-        this.bgrColor = bgrColor
-        this.height = 150
-        this.width = 50
-        this.lastKey = ''
+        this.position = position;
+        this.velocity = velocity;
+        this.bgrColor = bgrColor;
+        this.height = 150;
+        this.width = 50;
+        this.lastKey = '';
         this.attackBox = {
             position: {
                 x: this.position.x,
@@ -27,9 +27,10 @@ class Sprite {
             },
             offset,
             width: 100,
-            height: 50
-        }
-        this.isAttacking = false
+            height: 10
+        };
+        this.isAttacking = false;
+        this.health = 100;
     }
 
     draw() {
@@ -38,7 +39,7 @@ class Sprite {
 
         // attack box
         if (this.isAttacking) {
-            c.fillStyle = 'green'
+            c.fillStyle = '#ed0606'
             c.fillRect(
                 this.attackBox.position.x,
                 this.attackBox.position.y,
@@ -89,7 +90,7 @@ const player = new Sprite({
         x: 0,
         y: 0
     },
-    bgrColor: 'red',
+    bgrColor: '#00ff04',
     offset: {
         x: 0,
         y: 0
@@ -105,7 +106,7 @@ const enemy = new Sprite({
         x: 0,
         y: 0
     },
-    bgrColor: 'blue',
+    bgrColor: '#f5d812',
     offset: {
         x: -50,
         y: 0
@@ -171,12 +172,16 @@ function animate() {
     // detect for collision
     if (rectangularCollision({rectangle1: player, rectangle2: enemy}) && player.isAttacking) {
         console.log('detect for collision');
-        player.isAttacking = false
+        player.isAttacking = false;
+        enemy.health -= 20
+        document.querySelector('#enemyHealth').style.width = enemy.health + '%'
     }
 
     if (rectangularCollision({rectangle1: enemy, rectangle2: player}) && enemy.isAttacking) {
         console.log('enemy attack successful');
-        enemy.isAttacking = false
+        enemy.isAttacking = false;
+        player.health -= 20
+        document.querySelector('#playerHealth').style.width = player.health + '%'
     }
 }
 
@@ -214,7 +219,8 @@ window.addEventListener('keydown', (event) => {
             enemy.velocity.y = -20;
             break
         case  'ArrowDown':
-            enemy.isAttacking = true
+            // enemy.isAttacking = true
+            enemy.attack()
             break
     }
 })

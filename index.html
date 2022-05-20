@@ -7,18 +7,38 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <link rel="preconnect" href="https://fonts.googleapis.com"/>
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
-    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet" />
-    <style>
-        * {
-            box-sizing: border-box;
-            font-family: 'Press Start 2P', cursive;
-        }
-    </style>
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet"/>
+    <link href="app.css" rel="stylesheet">
     <title>Fighting Game Canvas</title>
 </head>
 <body>
-<canvas></canvas>
+<div class="game">
+    <!-- red container div -->
+    <div class="container">
+        <!-- smaller red container div -->
+        <div class="smaller">
+            <!-- player health -->
+            <div class="player_health" >
+                <div style="background-color: antiquewhite; height: 30px; width: 100%"></div>
+                <div class="playerHealth" id="playerHealth"></div>
+            </div>
 
+            <!-- timer -->
+            <div class="timer" id="timer"> 90 </div>
+            <!-- enemy health -->
+            <div class="enemy_health">
+                <div style="background-color: antiquewhite; height: 30px"></div>
+                <div class="enemyHealth" id="enemyHealth"></div>
+            </div>
+            <div></div>
+        </div>
+        <div class="displayText" id="displayText">
+            Tie
+        </div>
+        <canvas></canvas>
+    </div>
+
+</div>
 <script src="app.js"></script>
 </body>
 </html>

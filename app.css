@@ -1,0 +1,87 @@
+* {
+    box-sizing: border-box;
+    font-family: 'Press Start 2P', cursive;
+    padding: 0;
+    margin: 0;
+}
+
+.game {
+    height: 100vh;
+    background: rgb(2,0,36);
+    background: linear-gradient(90deg, rgba(2,0,36,1) 0%, rgba(9,9,121,1) 35%, rgba(0,212,255,1) 100%);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.container {
+    position: relative;
+    display: inline-block
+}
+
+.smaller {
+    position: absolute;
+    display: flex;
+    width: 100%;
+    align-items: center;
+    padding-top: 0.15rem;
+    padding-right: 0.25rem;
+    padding-left: 0.25rem;
+}
+
+.player_health {
+    position: relative;
+    height: 30px;
+    width: 100%;
+    display: flex;
+    justify-content: flex-end;
+}
+
+.playerHealth {
+    position: absolute;
+    background: rgb(0,255,4);
+    background: linear-gradient(90deg, rgba(0,255,4,1) 0%, rgba(245,216,18,1) 85%, rgba(237,6,6,1) 100%);
+    top: 0;
+    right: 0;
+    bottom: 0;
+    width: 100%;
+}
+
+.timer {
+    background: rgba(255,232,105,1);
+    background: radial-gradient(circle, rgba(255,232,105,1) 72%, rgba(250,227,6,1) 100%);
+    width: 100px;
+    height: 100px;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.enemy_health {
+    position: relative;
+    height: 30px;
+    width: 100%
+}
+
+.enemyHealth {
+    position: absolute;
+    background: rgb(240,37,4);
+    background: linear-gradient(90deg, rgba(240,37,4,1) 0%, rgba(245,216,18,1) 15%, rgba(0,255,4,1) 100%);
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+}
+
+.displayText {
+    position: absolute;
+    color: white;
+    align-items: center;
+    justify-content: center;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    display: none;
+}
