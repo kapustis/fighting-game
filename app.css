@@ -76,7 +76,8 @@
 
 .displayText {
     position: absolute;
-    color: white;
+    color: antiquewhite;
+    /*display: flex;*/
     align-items: center;
     justify-content: center;
     top: 0;

@@ -12,6 +12,10 @@ c.fillRect(0, 0, canvas.width, canvas.height)
  */
 const gravity = 0.7;
 
+let timer = 60;
+
+let timerID = null;
+
 class Sprite {
     constructor({position, velocity, bgrColor, offset}) {
         this.position = position;
@@ -147,6 +151,52 @@ function rectangularCollision({rectangle1, rectangle2}) {
     )
 }
 
+function determineWinner({player, enemy,timerID}) {
+
+    clearTimeout(timerID);
+
+    document.querySelector('#displayText').style.display = 'flex';
+
+    if (player.health === enemy.health) {
+        document.querySelector('#displayText').innerHTML = 'Tie';
+    } else if (player.health > enemy.health) {
+        document.querySelector('#displayText').innerHTML = 'Player 1 Wins';
+    } else {
+        document.querySelector('#displayText').innerHTML = 'Player 2 Wins';
+    }
+}
+
+function decreaseTimer() {
+    timerID =  setTimeout(decreaseTimer, 1000)
+    if (timer > 0) {
+        timer--;
+        document.querySelector('#timer').innerHTML = String(timer);
+    }
+    if (timer === 0) {
+        determineWinner({player, enemy,timerID});
+    }
+}
+
+decreaseTimer();
+
+// function addEvent(el, event, callback, isCapture = false) {
+//     if (!el || !event || !callback || typeof callback !== 'function') return
+//
+//     if (typeof el === 'string') {
+//         el = document.querySelector(el);
+//     }
+//     el.addEventListener(event, callback, isCapture)
+// }
+//
+// addEvent(document, 'DOMContentLoaded', () => {
+//
+//     addEvent('#displayText', 'click', function(e) {
+//         console.log('Tie');
+//     }, true)
+//
+//
+// })
+
 function animate() {
     window.requestAnimationFrame(animate);
     c.fillStyle = 'black';
@@ -182,6 +232,10 @@ function animate() {
         enemy.isAttacking = false;
         player.health -= 20
         document.querySelector('#playerHealth').style.width = player.health + '%'
+    }
+
+    if (player.health <= 0 || enemy.health <= 0) {
+        determineWinner({player, enemy,timerID});
     }
 }
 
