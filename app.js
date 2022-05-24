@@ -21,7 +21,19 @@ const background = new Sprite({
         x: 0,
         y: 0
     },
-    imageSrc:"./img/background.png"
+    imageSrc:"./img/background.png",
+
+});
+
+const shop = new Sprite({
+    position: {
+        x: 675,
+        y: 256
+    },
+    imageSrc:"./img/shop.png",
+    scale: 1.75,
+    frameMaxW: 6,
+
 });
 
 const player = new Fighter({
@@ -93,24 +105,26 @@ function decreaseTimer() {
 }
 
 decreaseTimer();
+/*
+function addEvent(el, event, callback, isCapture = false) {
+    if (!el || !event || !callback || typeof callback !== 'function') return
 
-// function addEvent(el, event, callback, isCapture = false) {
-//     if (!el || !event || !callback || typeof callback !== 'function') return
-//
-//     if (typeof el === 'string') {
-//         el = document.querySelector(el);
-//     }
-//     el.addEventListener(event, callback, isCapture)
-// }
-//
-// addEvent(document, 'DOMContentLoaded', () => {
-//
-//     addEvent('#displayText', 'click', function(e) {
-//         console.log('Tie');
-//     }, true)
-//
-//
-// })
+    if (typeof el === 'string') {
+        el = document.querySelector(el);
+    }
+    el.addEventListener(event, callback, isCapture)
+}
+
+addEvent(document, 'DOMContentLoaded', () => {
+
+    addEvent('#displayText', 'click', function(e) {
+        console.log('Tie');
+    }, true)
+
+
+});
+*/
+
 
 function animate() {
     window.requestAnimationFrame(animate);
@@ -118,6 +132,7 @@ function animate() {
     c.fillRect(0, 0, canvas.width, canvas.height);
 
     background.update();
+    shop.update();
     player.update();
     enemy.update();
 
