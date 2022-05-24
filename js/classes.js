@@ -4,56 +4,78 @@ class Sprite {
             position,
             imageSrc,
             scale = 1,
-            frameMaxW = 1,
-            frameMaxH = 1,
-            frameCurrent = 0
+            framesMaxW = 1,
+            framesMaxH = 1,
+            offset = {x: 0, y: 0},
         }) {
         this.position = position;
-        this.height = 150;
         this.width = 50;
+        this.height = 150;
+
         this.image = new Image();
         this.image.src = imageSrc;
         this.scale = scale;
-        this.frameMaxW = frameMaxW;
-        this.frameMaxH = frameMaxH;
-        this.frameCurrent = frameCurrent;
-        this.frameCurrentH = frameCurrent;
+        this.framesMaxW = framesMaxW;
+        this.framesMaxH = framesMaxH;
+
+        this.framesCurrent = 0;
+
         this.frameElapsed = 0;
         this.frameHold = 10;
+        this.offset = offset
     }
 
     draw() {
         c.drawImage(
             this.image,
-            this.frameCurrent * (this.image.width / this.frameMaxW),
+            this.framesCurrent * (this.image.width / this.framesMaxW),
             0,
-            this.image.width / this.frameMaxW,
-            this.image.height / this.frameMaxH,
-            this.position.x,
-            this.position.y,
-            (this.image.width / this.frameMaxW) * this.scale,
-            (this.image.height / this.frameMaxH) * this.scale
+            this.image.width / this.framesMaxW,
+            this.image.height / this.framesMaxH,
+            this.position.x - this.offset.x,
+            this.position.y - this.offset.y,
+            (this.image.width / this.framesMaxW) * this.scale,
+            (this.image.height / this.framesMaxH) * this.scale
         )
     }
 
-    update() {
-        this.draw();
+    animateFrames() {
         this.frameElapsed++;
+
         if (this.frameElapsed % this.frameHold === 0) {
-            if (this.frameCurrent < this.frameMaxW - 1) {
-                this.frameCurrent++;
+            if (this.framesCurrent < this.framesMaxW - 1) {
+                this.framesCurrent++;
             } else {
-                this.frameCurrent = 0
+                this.framesCurrent = 0
             }
         }
     }
 
-
+    update() {
+        this.draw();
+        this.animateFrames();
+    }
 }
 
-class Fighter {
-    constructor({position, velocity, bgrColor, offset}) {
-        this.position = position;
+class Fighter extends Sprite {
+    constructor({
+                    position,
+                    velocity,
+                    bgrColor = '#00ff04',
+                    imageSrc,
+                    scale = 1,
+                    framesMaxW,
+                    offset = {x: 0, y: 0}
+                }) {
+        super({
+            position,
+            imageSrc,
+            scale,
+            framesMaxW,
+            offset
+        })
+
+        // this.position = position;
         this.velocity = velocity;
         this.bgrColor = bgrColor;
         this.height = 150;
@@ -70,26 +92,32 @@ class Fighter {
         };
         this.isAttacking = false;
         this.health = 100;
+
+        this.framesCurrent = 0
+        this.framesElapsed = 0
+        this.framesHold = 5
     }
 
-    draw() {
-        c.fillStyle = this.bgrColor;
-        c.fillRect(this.position.x, this.position.y, this.width, this.height);
+    // draw() {
+        // c.fillStyle = this.bgrColor;
+        // c.fillRect(this.position.x, this.position.y, this.width, this.height);
 
         // attack box
-        if (this.isAttacking) {
-            c.fillStyle = '#ed0606'
-            c.fillRect(
-                this.attackBox.position.x,
-                this.attackBox.position.y,
-                this.attackBox.width,
-                this.attackBox.height
-            )
-        }
-    }
+        // if (this.isAttacking) {
+        //     c.fillStyle = '#ed0606'
+        //     c.fillRect(
+        //         this.attackBox.position.x,
+        //         this.attackBox.position.y,
+        //         this.attackBox.width,
+        //         this.attackBox.height
+        //     )
+        // }
+    // }
 
     update() {
-        this.draw()
+        this.draw();
+        this.animateFrames();
+
         this.attackBox.position.x = this.position.x + this.attackBox.offset.x
         this.attackBox.position.y = this.position.y
 

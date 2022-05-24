@@ -3,7 +3,7 @@
  */
 
 window.addEventListener('keydown', (event) => {
-    console.log(event.code)
+    // console.log(event.code)
     switch (event.code) {
 
         //player keys

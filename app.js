@@ -32,25 +32,29 @@ const shop = new Sprite({
     },
     imageSrc:"./img/shop.png",
     scale: 1.75,
-    frameMaxW: 6,
+    framesMaxW: 6,
 
 });
 
 const player = new Fighter({
     position: {
         x: 0,
-        y: 300
+        y: 0
     },
     velocity: {
         x: 0,
         y: 0
     },
-    bgrColor: '#00ff04',
+    imageSrc: './img/samuraiMack/Idle.png',
+    framesMaxW: 8,
+    scale: 2.5,
     offset: {
-        x: 0,
-        y: 0
+        x: 215,
+        y: 157
     }
 });
+
+console.log(player.image.src);
 
 const enemy = new Fighter({
     position: {
@@ -68,41 +72,6 @@ const enemy = new Fighter({
     }
 });
 
-function rectangularCollision({rectangle1, rectangle2}) {
-
-    return (
-        rectangle1.attackBox.position.x + rectangle1.attackBox.width >= rectangle2.position.x
-        && rectangle1.attackBox.position.x <= rectangle2.position.x + rectangle2.width
-        && rectangle1.attackBox.position.y + rectangle1.attackBox.height >= rectangle2.position.y
-        && rectangle1.attackBox.position.y <= rectangle2.position.y + rectangle2.height
-    )
-}
-
-function determineWinner({player, enemy, timerID}) {
-
-    clearTimeout(timerID);
-
-    document.querySelector('#displayText').style.display = 'flex';
-
-    if (player.health === enemy.health) {
-        document.querySelector('#displayText').innerHTML = 'Tie';
-    } else if (player.health > enemy.health) {
-        document.querySelector('#displayText').innerHTML = 'Player 1 Wins';
-    } else {
-        document.querySelector('#displayText').innerHTML = 'Player 2 Wins';
-    }
-}
-
-function decreaseTimer() {
-    timerID = setTimeout(decreaseTimer, 1000)
-    if (timer > 0) {
-        timer--;
-        document.querySelector('#timer').innerHTML = String(timer);
-    }
-    if (timer === 0) {
-        determineWinner({player, enemy, timerID});
-    }
-}
 
 decreaseTimer();
 /*
@@ -134,7 +103,7 @@ function animate() {
     background.update();
     shop.update();
     player.update();
-    enemy.update();
+    // enemy.update();
 
     player.velocity.x = 0;
     enemy.velocity.x = 0;
@@ -145,12 +114,14 @@ function animate() {
     } else if (keys.d.pressed && player.lastKey === 'd' && player.position.x + 50 + player.velocity.x <= canvas.width) {
         player.velocity.x = 10;
     }
+
     //enemy movement
     if (keys.ArrowLeft.pressed && enemy.lastKey === 'ArrowLeft' && enemy.position.x !== 0) {
         enemy.velocity.x = -10;
     } else if (keys.ArrowRight.pressed && enemy.lastKey === 'ArrowRight' && enemy.position.x + 50 + enemy.velocity.x <= canvas.width) {
         enemy.velocity.x = 10;
     }
+
     // detect for collision
     if (rectangularCollision({rectangle1: player, rectangle2: enemy}) && player.isAttacking) {
         console.log('detect for collision');
