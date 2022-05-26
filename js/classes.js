@@ -65,7 +65,8 @@ class Fighter extends Sprite {
                     imageSrc,
                     scale = 1,
                     framesMaxW,
-                    offset = {x: 0, y: 0}
+                    offset = {x: 0, y: 0},
+                    sprites
                 }) {
         super({
             position,
@@ -93,25 +94,32 @@ class Fighter extends Sprite {
         this.isAttacking = false;
         this.health = 100;
 
-        this.framesCurrent = 0
-        this.framesElapsed = 0
-        this.framesHold = 5
+        this.framesCurrent = 0;
+        this.framesElapsed = 0;
+        this.framesHold = 5;
+        this.sprites = sprites;
+
+        for (const sprite in this.sprites) {
+            sprites[sprite].image = new Image()
+            sprites[sprite].image.src = sprites[sprite].imageSrc
+        }
+        console.log(this.sprites)
     }
 
     // draw() {
-        // c.fillStyle = this.bgrColor;
-        // c.fillRect(this.position.x, this.position.y, this.width, this.height);
+    // c.fillStyle = this.bgrColor;
+    // c.fillRect(this.position.x, this.position.y, this.width, this.height);
 
-        // attack box
-        // if (this.isAttacking) {
-        //     c.fillStyle = '#ed0606'
-        //     c.fillRect(
-        //         this.attackBox.position.x,
-        //         this.attackBox.position.y,
-        //         this.attackBox.width,
-        //         this.attackBox.height
-        //     )
-        // }
+    // attack box
+    // if (this.isAttacking) {
+    //     c.fillStyle = '#ed0606'
+    //     c.fillRect(
+    //         this.attackBox.position.x,
+    //         this.attackBox.position.y,
+    //         this.attackBox.width,
+    //         this.attackBox.height
+    //     )
+    // }
     // }
 
     update() {
@@ -124,13 +132,16 @@ class Fighter extends Sprite {
         this.position.y += this.velocity.y
         this.position.x += this.velocity.x
 
+        // gravity func
         if (this.position.y + this.height + this.velocity.y >= canvas.height - 96) { //|| this.position.y <= 0
             // this.velocity.y = -this.velocity.y
-            this.velocity.y = 0
+            this.velocity.y = 0;
+            this.position.y = 330;
         } else {
             this.velocity.y += gravity
-
         }
+
+        console.log(this.position.y)
 
         if (this.position.x + this.width + this.velocity.x >= canvas.width || this.position.x < 0) {
             // this.velocity.x = -this.velocity.x
@@ -146,4 +157,38 @@ class Fighter extends Sprite {
             this.isAttacking = false
         }, 100)
     }
+
+    switchSprite(sprite) {
+        switch (sprite) {
+            case 'idle':
+                if (this.image !== this.sprites.idle.image) {
+                    this.image = this.sprites.idle.image
+                    this.framesMaxW = this.sprites.idle.framesMaxW
+                    this.framesCurrent = 0
+                }
+                break
+            case 'run':
+                if (this.image !== this.sprites.run.image) {
+                    this.image = this.sprites.run.image
+                    this.framesMaxW = this.sprites.run.framesMaxW
+                    this.framesCurrent = 0
+                }
+                break
+            case 'jump':
+                if (this.image !== this.sprites.jump.image) {
+                    this.image = this.sprites.jump.image
+                    this.framesMaxW = this.sprites.jump.framesMaxW
+                    this.framesCurrent = 0
+                }
+                break
+            case 'fall':
+                if (this.image !== this.sprites.fall.image) {
+                    this.image = this.sprites.fall.image
+                    this.framesMaxW = this.sprites.fall.framesMaxW
+                    this.framesCurrent = 0
+                }
+                break
+        }
+    }
+
 }
