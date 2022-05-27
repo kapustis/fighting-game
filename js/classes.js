@@ -7,6 +7,7 @@ class Sprite {
             framesMaxW = 1,
             framesMaxH = 1,
             offset = {x: 0, y: 0},
+            flip = false
         }) {
         this.position = position;
         this.width = 50;
@@ -19,34 +20,43 @@ class Sprite {
         this.framesMaxH = framesMaxH;
 
         this.framesCurrent = 0;
-
-        this.frameElapsed = 0;
-        this.frameHold = 10;
-        this.offset = offset
+        this.framesElapsed = 0;
+        this.framesHold = 5;
+        this.offset = offset;
+        this.flip = flip;
     }
 
     draw() {
-        c.drawImage(
+
+        if(this.flip){
+            // ctx.scale(-1, 1);
+        }
+        ctx.drawImage(
             this.image,
             this.framesCurrent * (this.image.width / this.framesMaxW),
             0,
             this.image.width / this.framesMaxW,
             this.image.height / this.framesMaxH,
+            // this.image.height,
             this.position.x - this.offset.x,
             this.position.y - this.offset.y,
             (this.image.width / this.framesMaxW) * this.scale,
             (this.image.height / this.framesMaxH) * this.scale
-        )
+            // this.image.height  * this.scale
+        );
+
+
+        // ctx.restore();
     }
 
     animateFrames() {
-        this.frameElapsed++;
+        this.framesElapsed++;
 
-        if (this.frameElapsed % this.frameHold === 0) {
+        if (this.framesElapsed % this.framesHold === 0) {
             if (this.framesCurrent < this.framesMaxW - 1) {
                 this.framesCurrent++;
             } else {
-                this.framesCurrent = 0
+                this.framesCurrent = 0;
             }
         }
     }
@@ -64,24 +74,25 @@ class Fighter extends Sprite {
                     bgrColor = '#00ff04',
                     imageSrc,
                     scale = 1,
-                    framesMaxW,
+                    framesMaxW = 1,
                     offset = {x: 0, y: 0},
-                    sprites
+                    sprites,
+                    flip
                 }) {
         super({
             position,
             imageSrc,
             scale,
             framesMaxW,
-            offset
+            offset,
+            flip
         })
 
-        // this.position = position;
         this.velocity = velocity;
         this.bgrColor = bgrColor;
-        this.height = 150;
         this.width = 50;
-        this.lastKey = '';
+        this.height = 150;
+        this.lastKey =''
         this.attackBox = {
             position: {
                 x: this.position.x,
@@ -89,8 +100,9 @@ class Fighter extends Sprite {
             },
             offset,
             width: 100,
-            height: 10
+            height: 50
         };
+
         this.isAttacking = false;
         this.health = 100;
 
@@ -103,37 +115,20 @@ class Fighter extends Sprite {
             sprites[sprite].image = new Image()
             sprites[sprite].image.src = sprites[sprite].imageSrc
         }
-        console.log(this.sprites)
     }
-
-    // draw() {
-    // c.fillStyle = this.bgrColor;
-    // c.fillRect(this.position.x, this.position.y, this.width, this.height);
-
-    // attack box
-    // if (this.isAttacking) {
-    //     c.fillStyle = '#ed0606'
-    //     c.fillRect(
-    //         this.attackBox.position.x,
-    //         this.attackBox.position.y,
-    //         this.attackBox.width,
-    //         this.attackBox.height
-    //     )
-    // }
-    // }
 
     update() {
         this.draw();
         this.animateFrames();
 
-        this.attackBox.position.x = this.position.x + this.attackBox.offset.x
-        this.attackBox.position.y = this.position.y
+        this.attackBox.position.x = this.position.x + this.attackBox.offset.x;
+        this.attackBox.position.y = this.position.y;
 
-        this.position.y += this.velocity.y
-        this.position.x += this.velocity.x
+        this.position.y += this.velocity.y;
+        this.position.x += this.velocity.x;
 
         // gravity func
-        if (this.position.y + this.height + this.velocity.y >= canvas.height - 96) { //|| this.position.y <= 0
+        if (this.position.y + this.height + this.velocity.y >= canvas.height - 96) {
             // this.velocity.y = -this.velocity.y
             this.velocity.y = 0;
             this.position.y = 330;
@@ -141,24 +136,23 @@ class Fighter extends Sprite {
             this.velocity.y += gravity
         }
 
-        console.log(this.position.y)
-
-        if (this.position.x + this.width + this.velocity.x >= canvas.width || this.position.x < 0) {
-            // this.velocity.x = -this.velocity.x
-            this.velocity.x = 0
-        } else {
-            // this.velocity.x += gravity
-        }
     }
 
     attack() {
-        this.isAttacking = true
+        this.switchSprite('attack1');
+        this.isAttacking = true;
         setTimeout(() => {
             this.isAttacking = false
         }, 100)
     }
 
     switchSprite(sprite) {
+
+        if (this.image === this.sprites.attack1.image && this.framesCurrent < this.sprites.attack1.framesMaxW - 1){
+
+            return
+        }
+
         switch (sprite) {
             case 'idle':
                 if (this.image !== this.sprites.idle.image) {
@@ -185,6 +179,13 @@ class Fighter extends Sprite {
                 if (this.image !== this.sprites.fall.image) {
                     this.image = this.sprites.fall.image
                     this.framesMaxW = this.sprites.fall.framesMaxW
+                    this.framesCurrent = 0
+                }
+                break
+            case 'attack1':
+                if (this.image !== this.sprites.attack1.image) {
+                    this.image = this.sprites.attack1.image
+                    this.framesMaxW = this.sprites.attack1.framesMaxW
                     this.framesCurrent = 0
                 }
                 break

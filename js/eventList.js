@@ -16,7 +16,8 @@ window.addEventListener('keydown', (event) => {
             player.lastKey = 'a';
             break
         case  'KeyW':
-            player.velocity.y = -20;
+            keys.w.pressed = true;
+            player.lastKey = 'w';
             break
         case  'Space':
             player.attack()
@@ -31,11 +32,11 @@ window.addEventListener('keydown', (event) => {
             enemy.lastKey = 'ArrowLeft';
             break
         case  'ArrowUp':
-            enemy.velocity.y = -20;
+            keys.ArrowUp.pressed = true;
+            enemy.lastKey = 'ArrowUp';
             break
         case  'ArrowDown':
-            // enemy.isAttacking = true
-            enemy.attack()
+            enemy.attack();
             break
     }
 })
@@ -48,12 +49,19 @@ window.addEventListener('keyup', (event) => {
         case  'KeyA':
             keys.a.pressed = false;
             break
+        case  'KeyW':
+            keys.w.pressed = false;
+            break
         //enemy keys
         case 'ArrowRight':
             keys.ArrowRight.pressed = false;
             break
         case  'ArrowLeft':
             keys.ArrowLeft.pressed = false;
+            break
+        case  'ArrowUp':
+            keys.ArrowUp.pressed = false;
+
             break
     }
 })

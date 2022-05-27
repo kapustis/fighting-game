@@ -13,6 +13,9 @@ const keys = {
     w: {
         pressed: false
     },
+    ArrowUp: {
+        pressed: false
+    },
     ArrowRight: {
         pressed: false
     },
