@@ -73,10 +73,16 @@ const player = new Fighter({
             imageSrc: './img/samuraiMack/Attack1.png',
             framesMaxW: 6
         }
+    },
+    attackBox: {
+        offset: {
+            x: 75,
+            y: 50
+        },
+        width: 155,
+        height: 50
     }
 });
-
-// console.log(player)
 
 const enemy = new Fighter({
     position: {
@@ -117,7 +123,15 @@ const enemy = new Fighter({
             framesMaxW: 4
         }
     },
-    flip: true
+    flip: true,
+    attackBox: {
+        offset: {
+            x: -155,
+            y: 50
+        },
+        width: 155,
+        height: 50
+    }
 });
 
 decreaseTimer();
@@ -202,10 +216,20 @@ function animate() {
     }
 
     // detect for collision
-    if (rectangularCollision({rectangle1: player, rectangle2: enemy}) && player.isAttacking) {
+    if (
+        rectangularCollision({rectangle1: player, rectangle2: enemy})
+        && player.isAttacking
+        && player.framesCurrent === 4
+    ) {
+        console.log('player  attack successful');
         player.isAttacking = false;
         enemy.health -= 20
         document.querySelector('#enemyHealth').style.width = enemy.health + '%'
+    }
+
+    // player misses
+    if (player.isAttacking && player.framesCurrent === 4) {
+        player.isAttacking = false;
     }
 
     if (rectangularCollision({rectangle1: enemy, rectangle2: player}) && enemy.isAttacking) {
@@ -213,6 +237,11 @@ function animate() {
         enemy.isAttacking = false;
         player.health -= 20
         document.querySelector('#playerHealth').style.width = player.health + '%'
+    }
+
+    // if enemy misses
+    if (enemy.isAttacking && enemy.framesCurrent === 2) {
+        enemy.isAttacking = false;
     }
 
     if (player.health <= 0 || enemy.health <= 0) {

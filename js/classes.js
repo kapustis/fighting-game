@@ -28,9 +28,10 @@ class Sprite {
 
     draw() {
 
-        if(this.flip){
+        if (this.flip) {
             // ctx.scale(-1, 1);
         }
+
         ctx.drawImage(
             this.image,
             this.framesCurrent * (this.image.width / this.framesMaxW),
@@ -44,7 +45,6 @@ class Sprite {
             (this.image.height / this.framesMaxH) * this.scale
             // this.image.height  * this.scale
         );
-
 
         // ctx.restore();
     }
@@ -77,7 +77,8 @@ class Fighter extends Sprite {
                     framesMaxW = 1,
                     offset = {x: 0, y: 0},
                     sprites,
-                    flip
+                    flip,
+                    attackBox = {offset: {}, width: undefined, height: undefined}
                 }) {
         super({
             position,
@@ -92,15 +93,15 @@ class Fighter extends Sprite {
         this.bgrColor = bgrColor;
         this.width = 50;
         this.height = 150;
-        this.lastKey =''
+        this.lastKey = ''
         this.attackBox = {
             position: {
                 x: this.position.x,
                 y: this.position.y
             },
-            offset,
-            width: 100,
-            height: 50
+            offset: attackBox.offset,
+            width: attackBox.width,
+            height: attackBox.height
         };
 
         this.isAttacking = false;
@@ -120,9 +121,11 @@ class Fighter extends Sprite {
     update() {
         this.draw();
         this.animateFrames();
-
+        // attack boxes
         this.attackBox.position.x = this.position.x + this.attackBox.offset.x;
-        this.attackBox.position.y = this.position.y;
+        this.attackBox.position.y = this.position.y + this.attackBox.offset.y;
+
+        // ctx.fillRect(this.attackBox.position.x, this.attackBox.position.y, this.attackBox.width, this.attackBox.height);
 
         this.position.y += this.velocity.y;
         this.position.x += this.velocity.x;
@@ -141,14 +144,12 @@ class Fighter extends Sprite {
     attack() {
         this.switchSprite('attack1');
         this.isAttacking = true;
-        setTimeout(() => {
-            this.isAttacking = false
-        }, 100)
+
     }
 
     switchSprite(sprite) {
 
-        if (this.image === this.sprites.attack1.image && this.framesCurrent < this.sprites.attack1.framesMaxW - 1){
+        if (this.image === this.sprites.attack1.image && this.framesCurrent < this.sprites.attack1.framesMaxW - 1) {
 
             return
         }
