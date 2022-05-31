@@ -15,11 +15,11 @@ function determineWinner({player, enemy, timerID}) {
     document.querySelector('#displayText').style.display = 'flex';
 
     if (player.health === enemy.health) {
-        document.querySelector('#displayText').innerHTML = 'Tie';
+        document.querySelector('#displayText').innerHTML = 'Tie press R button for new game';
     } else if (player.health > enemy.health) {
-        document.querySelector('#displayText').innerHTML = 'Player 1 Wins';
+        document.querySelector('#displayText').innerHTML = 'Player 1 Wins press R button for new game';
     } else if (player.health < enemy.health) {
-        document.querySelector('#displayText').innerHTML = 'Player 2 Wins';
+        document.querySelector('#displayText').innerHTML = 'Player 2 Wins press R button for new game';
     }
 }
 let timer = 60;

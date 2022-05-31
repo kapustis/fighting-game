@@ -4,6 +4,10 @@
 
 window.addEventListener('keydown', (event) => {
 
+    if(event.code === 'KeyR'){
+        location.reload();
+    }
+
    if(!player.dead || !enemy.dead){
        switch (event.code) {
            //player keys

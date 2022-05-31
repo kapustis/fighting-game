@@ -67,6 +67,7 @@
     width: 100%;
     border-top: 4px solid white;
     border-right: 4px solid white;
+    border-bottom-right-radius: 25px;
 }
 
 .enemyHealth {
@@ -77,6 +78,7 @@
     right: 0;
     bottom: 0;
     left: 0;
+    border-bottom-right-radius: 25px;
 }
 
 .displayText {
