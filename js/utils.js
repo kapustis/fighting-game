@@ -18,18 +18,42 @@ function determineWinner({player, enemy, timerID}) {
         document.querySelector('#displayText').innerHTML = 'Tie';
     } else if (player.health > enemy.health) {
         document.querySelector('#displayText').innerHTML = 'Player 1 Wins';
-    } else {
+    } else if (player.health < enemy.health) {
         document.querySelector('#displayText').innerHTML = 'Player 2 Wins';
     }
 }
+let timer = 60;
+let timerID = null;
 
 function decreaseTimer() {
-    timerID = setTimeout(decreaseTimer, 1000)
+    timerID = setTimeout(decreaseTimer, 1000);
+
     if (timer > 0) {
         timer--;
         document.querySelector('#timer').innerHTML = String(timer);
     }
+
     if (timer === 0) {
         determineWinner({player, enemy, timerID});
     }
 }
+
+/*
+function addEvent(el, event, callback, isCapture = false) {
+    if (!el || !event || !callback || typeof callback !== 'function') return
+
+    if (typeof el === 'string') {
+        el = document.querySelector(el);
+    }
+    el.addEventListener(event, callback, isCapture)
+}
+
+addEvent(document, 'DOMContentLoaded', () => {
+
+    addEvent('#displayText', 'click', function(e) {
+        console.log('Tie');
+    }, true)
+
+
+});
+*/

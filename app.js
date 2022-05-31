@@ -1,10 +1,10 @@
 const canvas = document.querySelector("canvas");
-const ctx = canvas.getContext("2d")
+const ctx = canvas.getContext("2d");
 
-canvas.width = 1024
-canvas.height = 576
+canvas.width = 1024;
+canvas.height = 576;
 
-ctx.fillRect(0, 0, canvas.width, canvas.height)
+ctx.fillRect(0, 0, canvas.width, canvas.height);
 
 /**
  * something like gravity
@@ -12,9 +12,6 @@ ctx.fillRect(0, 0, canvas.width, canvas.height)
  */
 const gravity = 0.7;
 
-let timer = 60;
-
-let timerID = null;
 
 const background = new Sprite({
     position: {
@@ -72,6 +69,10 @@ const player = new Fighter({
         attack1: {
             imageSrc: './img/samuraiMack/Attack1.png',
             framesMaxW: 6
+        },
+        takeHit: {
+            imageSrc: './img/samuraiMack/Take_Hit_White_Silhouette.png',
+            framesMaxW: 4
         }
     },
     attackBox: {
@@ -93,7 +94,7 @@ const enemy = new Fighter({
         x: 0,
         y: 0
     },
-    bgrColor: '#f5d812',
+    // bgrColor: '#f5d812',
     imageSrc: './img/kenji/Idle.png',
     framesMaxW: 4,
     scale: 2.5,
@@ -121,6 +122,10 @@ const enemy = new Fighter({
         attack1: {
             imageSrc: './img/kenji/Attack1.png',
             framesMaxW: 4
+        },
+        takeHit:{
+            imageSrc: './img/kenji/TakeHit.png',
+            framesMaxW: 3
         }
     },
     flip: true,
@@ -134,28 +139,33 @@ const enemy = new Fighter({
     }
 });
 
-decreaseTimer();
+/**
+ * key var
+ * @type {{a: {pressed: boolean}, d: {pressed: boolean}}}
+ */
+const keys = {
 
-/*
-function addEvent(el, event, callback, isCapture = false) {
-    if (!el || !event || !callback || typeof callback !== 'function') return
-
-    if (typeof el === 'string') {
-        el = document.querySelector(el);
+    a: {
+        pressed: false
+    },
+    d: {
+        pressed: false
+    },
+    w: {
+        pressed: false
+    },
+    ArrowUp: {
+        pressed: false
+    },
+    ArrowRight: {
+        pressed: false
+    },
+    ArrowLeft: {
+        pressed: false
     }
-    el.addEventListener(event, callback, isCapture)
 }
 
-addEvent(document, 'DOMContentLoaded', () => {
-
-    addEvent('#displayText', 'click', function(e) {
-        console.log('Tie');
-    }, true)
-
-
-});
-*/
-
+decreaseTimer();
 
 function animate() {
     window.requestAnimationFrame(animate);
@@ -174,16 +184,13 @@ function animate() {
 
     if (keys.a.pressed && player.lastKey === 'a' && player.position.x !== 0) {
         player.velocity.x = -5;
-        player.switchSprite('run')
+        player.switchSprite('run');
     } else if (keys.d.pressed && player.lastKey === 'd' && player.position.x + 50 + player.velocity.x <= canvas.width) {
         player.velocity.x = 5;
-        player.switchSprite('run')
+        player.switchSprite('run');
     } else {
-        player.switchSprite('idle')
-    }
-
-    if (keys.w.pressed && player.position.y === 330) {
-        player.velocity.y = -20;
+        player.switchSprite('idle');
+        // player.switchSprite('takeHit')
     }
 
     // player jumping
@@ -204,10 +211,6 @@ function animate() {
         enemy.switchSprite('idle')
     }
 
-    if (keys.ArrowUp.pressed && enemy.position.y === 330) {
-        enemy.velocity.y = -20;
-    }
-
     // enemy jumping
     if (enemy.velocity.y < 0) {
         enemy.switchSprite('jump')
@@ -215,15 +218,15 @@ function animate() {
         enemy.switchSprite('fall')
     }
 
-    // detect for collision
+    // detect for collision , enemy gets hit
     if (
         rectangularCollision({rectangle1: player, rectangle2: enemy})
         && player.isAttacking
         && player.framesCurrent === 4
     ) {
-        console.log('player  attack successful');
+        enemy.takeHit();
         player.isAttacking = false;
-        enemy.health -= 20
+
         document.querySelector('#enemyHealth').style.width = enemy.health + '%'
     }
 
@@ -231,11 +234,14 @@ function animate() {
     if (player.isAttacking && player.framesCurrent === 4) {
         player.isAttacking = false;
     }
-
-    if (rectangularCollision({rectangle1: enemy, rectangle2: player}) && enemy.isAttacking) {
-        console.log('enemy attack successful');
+    // detect for collision , player gets hit
+    if (rectangularCollision({rectangle1: enemy, rectangle2: player})
+        && enemy.isAttacking
+        && enemy.framesCurrent === 2
+    ) {
+        player.takeHit();
         enemy.isAttacking = false;
-        player.health -= 20
+
         document.querySelector('#playerHealth').style.width = player.health + '%'
     }
 
