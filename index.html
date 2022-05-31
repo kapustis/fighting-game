@@ -19,7 +19,7 @@
         <div class="smaller">
             <!-- player health -->
             <div class="player_health">
-                <div style="background-color: antiquewhite; height: 30px; width: 100%"></div>
+                <div style="background-color: antiquewhite; height: 30px; width: 100%; border-bottom-left-radius: 25px;"></div>
                 <div class="playerHealth" id="playerHealth"></div>
             </div>
 
@@ -27,7 +27,7 @@
             <div class="timer" id="timer">90</div>
             <!-- enemy health -->
             <div class="enemy_health">
-                <div style="background-color: antiquewhite; height: 30px"></div>
+                <div style="background-color: antiquewhite; height: 30px; border-bottom-left-radius: 25px;"></div>
                 <div class="enemyHealth" id="enemyHealth"></div>
             </div>
             <div></div>
@@ -38,7 +38,9 @@
         <canvas></canvas>
     </div>
 </div>
-
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.10.4/gsap.min.js"
+        integrity="sha512-VEBjfxWUOyzl0bAwh4gdLEaQyDYPvLrZql3pw1ifgb6fhEvZl9iDDehwHZ+dsMzA0Jfww8Xt7COSZuJ/slxc4Q=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <script src="js/utils.js"></script>
 <script src="js/classes.js"></script>
 <script src="app.js"></script>

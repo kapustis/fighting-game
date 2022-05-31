@@ -18,9 +18,9 @@ const background = new Sprite({
         x: 0,
         y: 0
     },
-    imageSrc: "./img/background.png",
-
+    imageSrc: "./img/background.png"
 });
+
 
 const shop = new Sprite({
     position: {
@@ -127,7 +127,7 @@ const enemy = new Fighter({
             imageSrc: './img/kenji/Attack1.png',
             framesMaxW: 4
         },
-        takeHit:{
+        takeHit: {
             imageSrc: './img/kenji/TakeHit.png',
             framesMaxW: 3
         },
@@ -182,6 +182,10 @@ function animate() {
 
     background.update();
     shop.update();
+
+    ctx.fillStyle = 'rgba(255, 255, 255, 0.15)';
+
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
     player.update();
     enemy.update();
 
@@ -189,7 +193,6 @@ function animate() {
     enemy.velocity.x = 0;
 
     //player movement
-
     if (keys.a.pressed && player.lastKey === 'a' && player.position.x !== 0) {
         player.velocity.x = -5;
         player.switchSprite('run');
@@ -198,14 +201,13 @@ function animate() {
         player.switchSprite('run');
     } else {
         player.switchSprite('idle');
-        // player.switchSprite('takeHit')
     }
 
     // player jumping
     if (player.velocity.y < 0) {
-        player.switchSprite('jump')
+        player.switchSprite('jump');
     } else if (player.velocity.y > 0) {
-        player.switchSprite('fall')
+        player.switchSprite('fall');
     }
 
     //enemy movement
@@ -214,16 +216,16 @@ function animate() {
         enemy.velocity.x = -5;
     } else if (keys.ArrowRight.pressed && enemy.lastKey === 'ArrowRight' && enemy.position.x + 50 + enemy.velocity.x <= canvas.width) {
         enemy.velocity.x = 5;
-        enemy.switchSprite('run')
+        enemy.switchSprite('run');
     } else {
-        enemy.switchSprite('idle')
+        enemy.switchSprite('idle');
     }
 
     // enemy jumping
     if (enemy.velocity.y < 0) {
-        enemy.switchSprite('jump')
+        enemy.switchSprite('jump');
     } else if (enemy.velocity.y > 0) {
-        enemy.switchSprite('fall')
+        enemy.switchSprite('fall');
     }
 
     // detect for collision , enemy gets hit
@@ -235,7 +237,10 @@ function animate() {
         enemy.takeHit();
         player.isAttacking = false;
 
-        document.querySelector('#enemyHealth').style.width = enemy.health + '%'
+        // document.querySelector('#enemyHealth').style.width = enemy.health + '%';
+        gsap.to('#enemyHealth', {
+            width: enemy.health + '%'
+        })
     }
 
     // player misses
@@ -250,7 +255,10 @@ function animate() {
         player.takeHit();
         enemy.isAttacking = false;
 
-        document.querySelector('#playerHealth').style.width = player.health + '%'
+        // document.querySelector('#playerHealth').style.width = player.health + '%';
+        gsap.to('#playerHealth', {
+            width: player.health + '%'
+        })
     }
 
     // if enemy misses

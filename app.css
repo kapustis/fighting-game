@@ -27,14 +27,17 @@
     padding-top: 0.15rem;
     padding-right: 0.25rem;
     padding-left: 0.25rem;
+
 }
 
 .player_health {
     position: relative;
-    height: 30px;
     width: 100%;
     display: flex;
     justify-content: flex-end;
+    border-left: 4px solid white;
+    border-bottom: 4px solid white;
+    border-bottom-left-radius: 25px;
 }
 
 .playerHealth {
@@ -45,13 +48,14 @@
     right: 0;
     bottom: 0;
     width: 100%;
+    border-bottom-left-radius: 25px;
 }
 
 .timer {
     background: rgba(255,232,105,1);
     background: radial-gradient(circle, rgba(255,232,105,1) 72%, rgba(250,227,6,1) 100%);
     width: 100px;
-    height: 100px;
+    height: 50px;
     flex-shrink: 0;
     display: flex;
     align-items: center;
@@ -60,8 +64,9 @@
 
 .enemy_health {
     position: relative;
-    height: 30px;
-    width: 100%
+    width: 100%;
+    border-top: 4px solid white;
+    border-right: 4px solid white;
 }
 
 .enemyHealth {
